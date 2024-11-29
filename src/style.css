@@ -1,0 +1,125 @@
+/* Root container layout */
+.root {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Topbar styling */
+  .top {
+    display: flex;
+    align-items: center;
+    background-color: #3f51b5; /* Changed to a nicer blue */
+    color: white;
+    padding: 10px;
+    font-size: 24px;
+    justify-content: flex-start;
+  }
+  
+  .top span {
+    margin-left: 20px;
+  }
+  
+  /* Container for the side menu and content */
+  .container {
+    display: flex;
+    flex: 1;
+  }
+  
+/* Side menu base styles */
+.side-menu {
+  width: 200px;
+  background-color: #37474f;
+  color: white;
+  padding: 20px;
+}
+
+/* Styles for the links */
+.side-menu ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.side-menu li {
+  margin: 10px 0;
+}
+
+.side-menu a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+.side-menu a:hover {
+  text-decoration: underline;
+}
+
+/* Active link styling in the general styles.css */
+.active {
+  font-weight: bold;
+  color: #ffeb3b; /* Yellow color for active link */
+}
+
+  
+  /* Hamburger menu styling */
+  .hamburger {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    width: 30px;
+    height: 20px;
+  }
+  
+  .hamburger div {
+    background-color: white;
+    height: 3px;
+    width: 100%;
+    margin: 3px 0;
+  }
+  
+  /* Content area styling */
+  .content {
+    flex: 1;
+    background-color: #e0e0e0; /* Light gray background for content */
+    padding: 20px;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  /* Full size content when side menu is hidden */
+  .full-size {
+    margin-left: 0;
+  }
+  
+  /* Optional: Hover effects */
+  .hamburger:hover div {
+    background-color: #ddd;
+  }
+  
+  /* Media queries for responsiveness */
+  @media (max-width: 768px) {
+    .side-menu {
+      width: 150px;
+    }
+  
+    .top {
+      font-size: 20px;
+    }
+  
+    .hamburger {
+      width: 25px;
+      height: 15px;
+    }
+  
+    .content {
+      padding: 10px;
+    }
+  }
+  .datatable .p-buttonset {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  
+  
