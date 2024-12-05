@@ -9,7 +9,7 @@ function DocumentList() {
 
   useEffect(() => {
     // Fetch document data from the backend
-    fetch('http://localhost/project1/backend/index.php?service=documents')
+    fetch('/backend/index.php?service=documents')
       .then((response) => response.json())
       .then((data) => setDocumentList(data.body))
       .catch((error) => console.error('Error fetching documents:', error));

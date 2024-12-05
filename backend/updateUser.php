@@ -3,6 +3,7 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
+require_once __DIR__ . '/findEntity.php';  // Ensure the correct path to your function file
 require('config.php');  // Include database configuration file
 
 try {
@@ -19,12 +20,24 @@ try {
     $city = isset($data['city']) ? $data['city'] : null;
     $born_date = isset($data['born_date']) ? $data['born_date'] : null;
     $user_role = isset($data['user_role']) ? $data['user_role'] : null;
+    $userPhoto = isset($data['userPhoto']) ? $data['userPhoto'] : null;
 
     // Check for required fields
     if (!$id || !$name || !$email || !$user_role) {
         throw new Exception("Missing required fields");
     }
 
+    $previousUserRegister = findEntity("users", ["*"], ['id' => ['=',$id, PDO::PARAM_INT]]);
+    $photo_id = $previousUserRegister['data'][0]['photo_id'];
+
+    if ($photo_id !== null && empty($userPhoto)) {
+        deletePicture($photo_id);
+        $photo_id = null;
+    } elseif ($photo_id !== null && !empty($userPhoto)) {
+        $photo_id = savePicture($userPhoto);
+    } elseif ($photo_id === null && !empty($userPhoto)) {
+        $photo_id = savePicture($userPhoto);
+    }
     // Hash password only if it's provided
     $hashed_password = $password ? password_hash($password, PASSWORD_BCRYPT) : null;
 
@@ -39,7 +52,8 @@ try {
                 address = :address,
                 city = :city,
                 born_date = :born_date,
-                user_role = :user_role";
+                user_role = :user_role,
+                photo_id = :photo_id";
     if ($hashed_password) {
         $sql .= ", password = :password";
     }

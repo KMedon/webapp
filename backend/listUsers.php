@@ -11,9 +11,13 @@ $rows = isset($_GET['rows']) ? (int)$_GET['rows'] : 10;
 $sortField = isset($_GET['sortField']) && $_GET['sortField'] !== 'null' ? $_GET['sortField'] : "name"; 
 $sortOrder = isset($_GET['sortOrder']) && $_GET['sortOrder'] !== 'null' ? $_GET['sortOrder'] : "ASC"; 
 
+$json = file_get_contents('php://input');
+// Decode JSON into associative array
+$filterData = json_decode($json, true); 
+
 
 // Call listEntities with pagination and sorting parameters
-$result = listEntities($table, $fields, $first, $rows, $sortField, $sortOrder);
+$result = listEntities($table, $fields, $first, $rows, $sortField, $sortOrder, $filterData);
 
 header("Content-Type: application/json");
 http_response_code($result["statusCode"]);

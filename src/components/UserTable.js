@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState} from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
@@ -12,42 +12,59 @@ import 'primeicons/primeicons.css';
 
 const UserTable = () => {
   const [users, setUsers] = useState([]);
-  const [setAlert] = useState({ visible: false, type: '', msg: '' });
-  const [loading, setLoading] = useState(false);
-  const [first, setFirst] = useState(0);
+  const [, setAlert] = useState({ visible: false, type: '', msg: '' });
+//  const [first, setFirst] = useState(0);
   const [rows, setRows] = useState(10);
   const [totalRecords, setTotalRecords] = useState(0);
-  const [sortField, setSortField] = useState(null);
-  const [sortOrder, setSortOrder] = useState(null);
+//  const [filters, setFilters] = useState({});
+//  const [sortField, setSortField] = useState(null);
+//  const [sortOrder, setSortOrder] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false); // Manage dialog visibility
   const [selectedUserId, setSelectedUserId] = useState(null);
   const navigate = useNavigate();
 
-  const fetchUsers = useCallback(async () => {
-    setLoading(true);
+  const [lazyParameters, setLazyParameters] = useState({
+    first: 0,
+    rows: 10,
+    sortField: "",
+    sortOrder: 1,
+    filters: null
+  });
+
+  const fetchUsers = async (lazyValues = { first: 0, rows: 10, sortField: null, sortOrder: null, filters: null }) => {
+    const page = lazyValues.first ?? 0;
+    const pageSize = lazyValues.rows ?? 10;
+    const sortField = lazyValues.sortField !== null ? lazyValues.sortField : ""
+    const sortOrder = lazyValues.sortOrder === 1 ? 'ASC' : 'DESC';
+
+    const filters = lazyValues.filters;
+
     try {
-      const response = await fetch(`/backend/listUsers.php?first=${first}&rows=${rows}&sortField=${sortField}&sortOrder=${sortOrder}`);
-      const result = await response.json();
-      if (result.result === "SUCCESS") {
-        setUsers(result.data);
-        setTotalRecords(result.totalRecords || 0);
-      } else {
-        console.error(result.message);
-        setUsers([]);
-        setTotalRecords(0);
-      }
+        const response = await fetch(`/backend/listUsers.php?first=${page}&rows=${pageSize}&sortField=${sortField}&sortOrder=${sortOrder}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(filters),
+        });
+
+        const result = await response.json();
+        if (result.result === 'SUCCESS') { }
+        setUsers(result.data ?? []);
+        setTotalRecords(result.totalRecords ?? 0);
     } catch (error) {
-      console.error("Error fetching users:", error);
-      setUsers([]);
-      setTotalRecords(0);
-    } finally {
-      setLoading(false);
+        setAlert({
+            visible: true,
+            type: 'error',
+            msg: 'Error fetching users:' + error,
+        });
     }
-  }, [first, rows, sortField, sortOrder]);
+};
+
   
   useEffect(() => {
-    fetchUsers();
-  }, [fetchUsers]);
+    fetchUsers(lazyParameters);
+  }, [lazyParameters]);
 
   const handleDeleteClick = (rowData) => {
     setSelectedUserId(rowData.id);
@@ -72,6 +89,10 @@ const UserTable = () => {
     setDialogOpen(false); // Close the dialog
   };
 
+  const onFilterHandler = (e) => {
+    setLazyParameters(e);
+    console.log('lazyParameters:', JSON.stringify(e));
+  };
 
   const actionTemplate = (rowData) => (
     <div className="p-buttonset">
@@ -116,30 +137,33 @@ const UserTable = () => {
         response={handleDeleteConfirmation}
       />
       <DataTable
+        filterDisplay="row" dataKey="id"
+        onFilter={onFilterHandler}
+        filters={lazyParameters.filters}
         value={users}
         lazy
         paginator
-        first={first}
+        first={lazyParameters.first}
         rows={rows}
         totalRecords={totalRecords}
-        loading={loading}
         onPage={(e) => {
-          setFirst(e.first);
+          setLazyParameters({ ...lazyParameters, first: e.first, rows: e.rows });
           setRows(e.rows);
         }}
         onSort={(e) => {
-          setSortField(e.sortField);
-          setSortOrder(e.sortOrder === 1 ? 'ASC' : 'DESC');
+          const { sortField, sortOrder } = e;
+          setLazyParameters((prev) => ({ ...prev, sortField, sortOrder }));
         }}
-        sortField={sortField}
-        sortOrder={sortOrder}
+        sortField={lazyParameters.sortField}
+        sortOrder={lazyParameters.sortOrder}
         rowsPerPageOptions={[5, 10, 20, 50, 100]}
         responsiveLayout="scroll"
       >
-        <Column field="name" header="Name" sortable />
-        <Column field="email" header="Email" sortable />
-        <Column field="user_role" header="Role" sortable />
-        <Column body={actionTemplate} header="Actions" />
+        <Column field="name" sortable header="Name" filter />
+        <Column field="email" sortable header="Email" filter />
+        <Column field="born_date" sortable header="Born Date" filter />
+        <Column field="user_role" sortable header="Role" filter />
+        <Column field='action' body={actionTemplate} header="Actions" />
       </DataTable>
     </Box>
     

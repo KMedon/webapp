@@ -19,6 +19,7 @@ function UserForm() {
     address: '',
     city: '',
     born_date: null,
+    photo: '',
   };
 
  
@@ -46,9 +47,11 @@ function UserForm() {
 
           if (result.result === 'SUCCESS' && result.data.length > 0) {
             const user = result.data[0];
+            user.photo = user.photo || '';
             if (user.born_date) {
               user.born_date = new Date(user.born_date); // Parse the date
             }
+            
             setFormData(user);
             
           } else {
@@ -155,6 +158,16 @@ function UserForm() {
   
   };
   
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData({ ...formData, photo: reader.result});
+    };
+    reader.readAsDataURL(file);
+  }
+};
 
   return (
     <Box sx={{ mt: 4, width: '50%', margin: '0 auto' }}>
@@ -197,7 +210,21 @@ function UserForm() {
               }}
             />
           </Grid>
+          
+          {formData.photo && (
+            <Grid item xs={12}>
+              <img src={formData.photo} alt="User Photo" style={{ maxWidth: '150px', maxHeight: '150px', borderRadius: '8px' }} />
+            </Grid>
+          )}
+          {(formMode === 'INSERT' || formMode === 'UPDATE') && (
+            <Grid item xs={12}>
+              <input type='file' onChange={handleFileChange} />
 
+              {formData.photo && (<Button variant='contained' color='primary' onClick={() => { setFormData({ ...formData, photo: ''}); }}>
+                Remove
+              </Button>)}
+            </Grid>
+          )}
           {/* Password */}
           <Grid item xs={6}>
             {formMode === 'INSERT' && (

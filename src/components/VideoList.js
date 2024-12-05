@@ -9,7 +9,7 @@ function VideoList() {
 
   useEffect(() => {
     // Fetch video data from the backend
-    fetch('/index.php?service=videos')
+    fetch('/backend/index.php?service=videos')
       .then((response) => response.json())
       .then((data) => setVideoList(data.body))
       .catch((error) => console.error('Error fetching videos:', error));

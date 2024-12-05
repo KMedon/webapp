@@ -9,7 +9,7 @@ function MusicList() {
 
   useEffect(() => {
     // Fetch music data from the backend
-    fetch('http://localhost/project1/backend/index.php?service=music')
+    fetch('/backend/index.php?service=music')
       .then((response) => response.json())
       .then((data) => setMusicList(data.body))
       .catch((error) => console.error('Error fetching music:', error));
