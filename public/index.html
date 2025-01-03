@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Document</title>
+    <!--<link rel="stylesheet" href="./style.css" />-->
+  </head>
+  <body>
+    <div id="root">
+    </div>
+  <script>
+    function showHideSideMenu() {
+      var sideMenu = document.querySelector('.side-menu');
+      if (sideMenu.classList.contains('hidden')) {
+        sideMenu.classList.remove('hidden');
+        document.querySelector('.content').classList.remove('full-size');
+      } else {
+        sideMenu.classList.add('hidden');
+        document.querySelector('.content').classList.add('full-size');   
+        }
+      }
+  </script>
+  </body>
+</html>
