@@ -17,6 +17,7 @@ import Login from './components/Login';
 import Logout from './components/Logout';
 
 
+
 function App() {
   const [menuVisible, setMenuVisible] = useState(true);
 
@@ -25,7 +26,7 @@ function App() {
   };
 
   return (
-    <Router>
+    <Router basename="/webapp">
     <div className="root">
       <TopBar onToggleMenu={toggleSideMenu} />
       <div className="container">

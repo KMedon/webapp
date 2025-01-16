@@ -3,7 +3,8 @@
 
 $pdoConnection = null;
 
-define("APP_MODE", "development"); // Change to "production" as needed
+//define("APP_MODE", "development"); // Change to "production" as needed
+define("APP_MODE", "MODE_PRODUCTION_AWARD");
 
 function getPDOConnection() {
     global $pdoConnection;
@@ -15,13 +16,13 @@ function getPDOConnection() {
             $dbname = "multimedia";
             $username = "root";
             $password = "xpto";
-        } elseif (APP_MODE === "production") {
+        } elseif (APP_MODE === "MODE_PRODUCTION_AWARD") {
             // Use production settings
-            $host = "production_host";
+            $host = "fdb1029.awardspace.net";
             $port = "3306";
-            $dbname = "prod_app";
-            $username = "prod_user";
-            $password = "prod_password";
+            $dbname = "4571085_multimedia";
+            $username = "4571085_multimedia";
+            $password = "Kubam20013#";
         }
 
         try {

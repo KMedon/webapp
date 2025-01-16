@@ -1,11 +1,11 @@
 <?php 
 
-require(__DIR__ . '/../vendor/autoload.php');
+//require(__DIR__ . '/../vendor/autoload.php');
 require(__DIR__ . '/library/constants.php');
 
 // UNCOMMENT ONE OF THESE TWO LINES FOR SETTING THE APP_MODE 
-define("APP_MODE", MODE_DEVELOPMENT);
-//define("APP_MODE", MODE_PRODUCTION_AWARD);
+//define("APP_MODE", MODE_DEVELOPMENT);
+define("APP_MODE", MODE_PRODUCTION_AWARD);
 //define("APP_MODE", MODE_PRODUCTION_GRIS);
 
 
@@ -20,11 +20,11 @@ if (defined("APP_MODE")) {
         
     } else if (APP_MODE == MODE_PRODUCTION_AWARD) {
         // Use these settings for the PRODUCTION server
-        define("DATABASE_HOST", "pdb1039.awardspace.net");
+        define("DATABASE_HOST", "fdb1029.awardspace.net");
         define("DATABASE_PORT", 3306);
-        define("DATABASE_USER",  "4212750_hiscale");
-        define("DATABASE_PASSWORD",  "3+112358_material_13213455");
-        define("DATABASE_NAME",  "4212750_hiscale");
+        define("DATABASE_USER",  "4571085_multimedia");
+        define("DATABASE_PASSWORD",  "Kubam20013#");
+        define("DATABASE_NAME",  "4571085_multimedia");
     } else if (APP_MODE == MODE_PRODUCTION_GRIS) {
         // Use these settings for the PRODUCTION server
         define("DATABASE_HOST", "pdb1039.awardspace.net");

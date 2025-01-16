@@ -2,6 +2,9 @@
 header("Content-Type: application/json");
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/musicManager.php';
+require_once __DIR__ . '/auth.php';
+checkAuthenticated(); 
+
 
 try {
     $conn = new PDO("mysql:host=".DATABASE_HOST.";dbname=".DATABASE_NAME, DATABASE_USER, DATABASE_PASSWORD);
