@@ -1,3 +1,7 @@
+# Overview
+
+Application is a full-stack multimedia management system built with React (frontend) and PHP/MySQL (backend). It allows users to manage music, videos, games, and users, providing features for adding, editing, deleting, and previewing media files. The backend is hosted on AwardSpace and interacts with a MySQL database.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
